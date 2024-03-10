@@ -1,0 +1,11 @@
+{"web":{
+    "client_id":"25097725097-cosievqnipfm8hm246eqh8t1dm7t2cct.apps.googleusercontent.com",
+    "project_id":"capstone-project-416206",
+    "auth_uri":"https://accounts.google.com/o/oauth2/auth",
+    "token_uri":"https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs",
+    "client_secret":"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",
+    "redirect_uris":["https://didactic-space-computing-machine-vjw49r55jxg2wv4r-3000.app.github.dev/"],
+    "javascript_origins":["https://jbates246.github.io"]
+    }
+}
