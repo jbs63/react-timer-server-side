@@ -56,7 +56,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Main routes
 // Home page
 app.get('/', middleware.loginRequired, function(req, res) {
-	res.render('home'); 
+	res.render('profile'); 
 });
 
 // Login and register pages
