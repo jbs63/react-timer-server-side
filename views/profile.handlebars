@@ -1,4 +1,30 @@
-<h1>This is the profile page</h1>
+<h1>Welcome, {{account.username}}</h1>
+
+<a href="/times">List of shot times</a>
+
+<h1>Add shot time (testing placeholder)</h1>
+<form action="/" method="POST">
+    <div>
+        <label for="drillType">Drill type</label>
+        <input type="text" id="drillType" name="drillType" placeholder="Drill type" required autofocus="" autocomplete="off" />
+    </div>
+    <div>
+        <label for="time">Time</label>
+        <input type="text" id="time" name="time" placeholder="Time" required autocomplete="off" />
+    </div>
+    <div>
+        <label for="reactTime">React Time</label>
+        <input type="text" id="reactTime" name="reactTime" placeholder="React Time" required autocomplete="off" />
+    </div>
+    <div>
+        <label for="date">Date</label>
+        <input type="text" id="date" name="date" placeholder="Date" required autocomplete="off" />
+    </div>
+    <div>
+        <button type="submit">Add time</button>
+    </div>
+</form>
+
 <form action="/logout" method="POST">
     <div>
         <button type="submit">Logout</button>

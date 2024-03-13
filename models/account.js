@@ -6,6 +6,12 @@ const Account = new Schema({
   username: String,
   email: String,
   googleId: String,
+  userId: String,
+  avatarUrl: String,
+  fastertRT: Number,
+  fastestDrills: new Schema({
+    drill: String
+  })
   // Add other fields as needed for various authentication strategies
 });
 
