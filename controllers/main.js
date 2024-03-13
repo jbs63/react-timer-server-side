@@ -5,14 +5,13 @@ const ShotTime = mongoose.model("ShotTime");
 let main = {
     // Base profile page
     root: async (req, res) => {
+        // To send username, profile pic, etc
         const account = await Account.findOne({ username: req.user.username }).lean();
-        console.log(account);
         res.render('profile', { account: account });
     },
 
     getShotTimes: async (req, res) => {
-        console.log(req.user.email);
-        const shotTimes = await ShotTime.find({ userId: req.user.email }).lean(); // should be userId
+        const shotTimes = await ShotTime.find({ userId: req.user._id }).lean();
         console.log(shotTimes);
         res.render('times', { shotTimes: shotTimes });
     },
@@ -20,7 +19,7 @@ let main = {
     addTime: async (req, res) => {
         // add shot time
         await ShotTime.create({
-            userId: req.user.email, // should be userId
+            userId: req.user._id,
             drillType: req.body.drillType,
             time: req.body.time,
             reactTime: req.body.reactTime,

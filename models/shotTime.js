@@ -2,7 +2,7 @@ let mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 const ShotTime = new Schema({
-  userId: String,
+  userId: String, // _id from Account
   drillType: String,
   time: Number,
   reactTime: Number,
