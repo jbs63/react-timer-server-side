@@ -14,6 +14,7 @@ let bodyParser = require('body-parser')
 require('./models/db.js');
 
 // User defined middleware and controllers (route implementations)
+const main = require ('./controllers/main.js')
 const login = require('./controllers/login.js');
 const middleware = require("./lib/middleware.js");
 const credentials = require('./models/credentials.js');
@@ -54,10 +55,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Main routes
-// Home page
-app.get('/', middleware.loginRequired, function(req, res) {
-	res.render('profile'); 
-});
+// Profile page
+app.get('/', middleware.loginRequired, main.root);
+app.post('/', main.addTime);
+
+app.get('/times', middleware.loginRequired, main.getShotTimes);
 
 // Login and register pages
 app.get('/login', login.login);

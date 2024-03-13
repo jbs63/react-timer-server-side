@@ -48,3 +48,4 @@ const gracefulShutdown = async (msg, callback) => {
   
   // Require the specific schemas
   require('./account');
+  require('./shotTime')
