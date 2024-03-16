@@ -12,7 +12,9 @@ let main = {
     },
 
     getShotTimes: async (req, res) => {
-        const shotTimes = await ShotTime.find({ userId: req.user._id }).lean();
+        const userId = req.body.userId;
+        // const shotTimes = await ShotTime.find({ userId: req.user._id }).lean();
+        const shotTimes = await ShotTime.find({ userId: userId }).lean();
         console.log(shotTimes);
         //res.render('times', { shotTimes: shotTimes }); // TODO: return shot times as json
         res.json({shotTimes: shotTimes});
