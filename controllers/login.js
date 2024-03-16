@@ -8,20 +8,21 @@ let login = {
     },
 
     processLogin: async (req, res) => {
-        if(req.params && req.params.username && req.params.password) {
-            const username = req.params.username;
+        if(req.body && req.body.username && req.body.password) {
+            const username = req.body.username;
 
             // Query the DB to see if username exists
             const account = await Account.findOne({username: username}).lean();
+            console.log(account);
             if(account) {
                 // If there's an account, set the user to account and redirect to home to let passport check if the password matches 
                 req.user = account; 
                 //res.redirect('/'); // TODO: pass in account json
-                return account;
+                res.json({account: account});
             } else { // TODO: return 401 if not found
                 // Otherwise, log error message
                 console.log("Incorrect login credentials");
-                res.redirect("/login");
+                //res.redirect("/login");
             }
         }
     },

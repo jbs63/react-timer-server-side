@@ -62,8 +62,8 @@ app.post('/', main.addTime);
 app.get('/times', middleware.loginRequired, main.getShotTimes);
 
 // Login and register pages
-app.get('/login', login.login);
-app.post('/login', passport.authenticate('local', { failureRedirect: '/login', failureMessage: true}), login.processLogin);
+//app.get('/login', login.login);
+app.post('/login', passport.authenticate('local', { failureMessage: true}), login.processLogin);
 app.get('/register', login.register);
 app.post('/register', login.processRegister);
 
