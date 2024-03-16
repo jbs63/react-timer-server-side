@@ -59,7 +59,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.get('/', middleware.loginRequired, main.root);
 // app.post('/', main.addTime);
 
-app.get('/times', middleware.loginRequired, main.getShotTimes);
+app.get('/times', main.getShotTimes);
 app.post('/times', main.addTime);
 
 // Login and register pages
