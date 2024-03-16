@@ -8,8 +8,8 @@ let login = {
     },
 
     processLogin: async (req, res) => {
-        if(req.body && req.body.username && req.body.password) {
-            const username = req.body.username;
+        if(req.params && req.params.username && req.params.password) {
+            const username = req.params.username;
 
             // Query the DB to see if username exists
             const account = await Account.findOne({username: username}).lean();
