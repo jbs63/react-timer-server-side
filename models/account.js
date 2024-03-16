@@ -8,9 +8,7 @@ const Account = new Schema({
   googleId: String,
   avatarUrl: String,
   fastertRT: Number,
-  fastestDrills: new Schema({
-    drill: String
-  })
+  fastestDrills: { type: [String], default: [] },
   // Add other fields as needed for various authentication strategies
 });
 

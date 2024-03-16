@@ -7,9 +7,8 @@ const ShotTime = new Schema({
   time: Number,
   reactTime: Number,
   date: String,
-  splits: new Schema({
-    split: Number
-  })
+  splits: { type: [Number], default: [] },
 });
+
 
 module.exports = mongoose.model('ShotTime', ShotTime);
