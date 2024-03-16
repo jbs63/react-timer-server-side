@@ -57,9 +57,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Main routes
 // Profile page
 app.get('/', middleware.loginRequired, main.root);
-app.post('/', main.addTime);
+// app.post('/', main.addTime);
 
 app.get('/times', middleware.loginRequired, main.getShotTimes);
+app.post('/times', main.addTime);
 
 // Login and register pages
 //app.get('/login', login.login);

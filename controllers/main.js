@@ -22,16 +22,16 @@ let main = {
 
     addTime: async (req, res) => {
         // add shot time
-        await ShotTime.create({
-            userId: req.user._id,
+        let shotTime = await ShotTime.create({
+            userId: req.body.userId,
             drillType: req.body.drillType,
             time: req.body.time,
             reactTime: req.body.reactTime,
-            date: req.body.date
+            date: req.body.date,
+            splits: req.body.splits
         });
-        // refresh page
-        const account = await Account.findOne({ username: req.user.username }).lean();
-        res.render('profile', { account: account });
+        shotTime = shotTime.toJSON();
+        res.json({shotTime: shotTime });
     }
  };
 
