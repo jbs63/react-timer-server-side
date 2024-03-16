@@ -16,8 +16,9 @@ let login = {
             if(account) {
                 // If there's an account, set the user to account and redirect to home to let passport check if the password matches 
                 req.user = account; 
-                res.redirect('/');
-            } else {
+                //res.redirect('/'); // TODO: pass in account json
+                return account;
+            } else { // TODO: return 401 if not found
                 // Otherwise, log error message
                 console.log("Incorrect login credentials");
                 res.redirect("/login");
