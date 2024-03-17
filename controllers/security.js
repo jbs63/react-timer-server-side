@@ -1,7 +1,4 @@
-// security.js
-
 const helmet = require('helmet');
-const generateNonceMiddleware = require('./csp.js');
 
 function configureSecurity(app) {
   // Disable the X-Powered-By header
@@ -39,9 +36,6 @@ function configureSecurity(app) {
         // Add more options as needed
       })
   );
-
-  // Use the CSP middleware
-  app.use(generateNonceMiddleware);
 }
   
 module.exports = configureSecurity;
