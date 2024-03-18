@@ -15,14 +15,14 @@ let login = {
             const account = await Account.findOne({username: username}).lean();
             console.log(account);
             if(account) {
-                // If there's an account, set the user to account and redirect to home to let passport check if the password matches 
+                // If there's an account, set the user to account
                 req.user = account; 
-                //res.redirect('/'); // TODO: pass in account json
+                //Pass in account json
                 res.json({account: account});
             } else { // TODO: return 401 if not found
                 // Otherwise, log error message
                 console.log("Incorrect login credentials");
-                //res.redirect("/login");
+                res.status(401);
             }
         }
     },
