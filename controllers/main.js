@@ -1,9 +1,7 @@
-require('dotenv').config({ path: './local_client_key.env' });
-
-const jwt = require('jsonwebtoken');
 const mongoose = require("mongoose");
 const Account = mongoose.model("Account");
 const ShotTime = mongoose.model("ShotTime");
+//const localAuth = require('./localAuth.js');
 
 let main = {
     // Base profile page
@@ -15,32 +13,26 @@ let main = {
 
     // return shot time json
     getShotTimes: async (req, res) => {
-        const accessToken = req.headers.authorization.replace("Bearer ", "");
+    //getShotTimes: [auth.verifyToken, async (req, res) => { // Apply the verifyToken middleware before the route handler
+        const userId = req.userId;
 
         try {
-            // Verify and decode the access token
-            const decodedToken = jwt.verify(accessToken, process.env.JWT_SECRET);
-            const userId = decodedToken.userId;
-
             const shotTimes = await ShotTime.find({ userId: userId }).lean();
             console.log(shotTimes);
-            res.json({shotTimes: shotTimes});
+            res.json({ shotTimes: shotTimes });
         } catch (error) {
-            // Handle token verification errors
-            console.error('Token verification failed:', error.message);
-            res.status(401).json({ error: 'Token verification failed' });
+            console.error('Error fetching shot times:', error.message);
+            res.status(500).json({ error: 'Internal server error' });
         }
+    //}],
     },
 
     // add shot time
     addTime: async (req, res) => {
-        const accessToken = req.headers.authorization.replace("Bearer ", "");
+    //addTime: [auth.verifyToken, async (req, res) => { // Apply the verifyToken middleware before the route handler
+        const userId = req.userId;
 
         try {
-            // Verify and decode the access token
-            const decodedToken = jwt.verify(accessToken, process.env.JWT_SECRET);
-            const userId = decodedToken.userId;
-
             let shotTime = await ShotTime.create({
                 userId: userId,
                 drillType: req.body.drillType,
@@ -50,12 +42,12 @@ let main = {
                 splits: req.body.splits
             });
             shotTime = shotTime.toJSON();
-            res.json({shotTime: shotTime });
+            res.json({ shotTime: shotTime });
         } catch (error) {
-            // Handle token verification errors
-            console.error('Token verification failed:', error.message);
-            res.status(401).json({ error: 'Token verification failed' });
+            console.error('Error adding shot time:', error.message);
+            res.status(500).json({ error: 'Internal server error' });
         }
+    //}]
     }
  };
 
