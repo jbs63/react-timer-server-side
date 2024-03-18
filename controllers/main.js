@@ -1,3 +1,6 @@
+require('dotenv').config({ path: './local_client_key.env' });
+
+const jwt = require('jsonwebtoken');
 const mongoose = require("mongoose");
 const Account = mongoose.model("Account");
 const ShotTime = mongoose.model("ShotTime");
@@ -13,43 +16,46 @@ let main = {
     // return shot time json
     getShotTimes: async (req, res) => {
         const accessToken = req.headers.authorization.replace("Bearer ", "");
-        // Now, you need to decode and verify the access token
-        // and extract user information from it.
 
-        // This step depends on the method you're using to generate and verify access tokens
+        try {
+            // Verify and decode the access token
+            const decodedToken = jwt.verify(accessToken, process.env.JWT_SECRET);
+            const userId = decodedToken.userId;
 
-        // For example, if you're using JWT (JSON Web Tokens), you would verify and decode the token like this:
-        // const decodedToken = jwt.verify(accessToken, yourSecretKey);
-        // const userId = decodedToken.userId;
-        
-        const userId = req.body.userId; // Replace with your logic to extract user ID
-        const shotTimes = await ShotTime.find({ userId: userId }).lean();
-        console.log(shotTimes);
-        res.json({shotTimes: shotTimes});
+            const shotTimes = await ShotTime.find({ userId: userId }).lean();
+            console.log(shotTimes);
+            res.json({shotTimes: shotTimes});
+        } catch (error) {
+            // Handle token verification errors
+            console.error('Token verification failed:', error.message);
+            res.status(401).json({ error: 'Token verification failed' });
+        }
     },
 
     // add shot time
     addTime: async (req, res) => {
         const accessToken = req.headers.authorization.replace("Bearer ", "");
-        // Now, you need to decode and verify the access token
-        // and extract user information from it.
 
-        // This step depends on the method you're using to generate and verify access tokens
-        
-        // For example, if you're using JWT (JSON Web Tokens), you would verify and decode the token like this:
-        // const decodedToken = jwt.verify(accessToken, yourSecretKey);
-        // const userId = decodedToken.userId;
+        try {
+            // Verify and decode the access token
+            const decodedToken = jwt.verify(accessToken, process.env.JWT_SECRET);
+            const userId = decodedToken.userId;
 
-        let shotTime = await ShotTime.create({
-            userId: req.body.userId, // Replace with your logic to extract user ID
-            drillType: req.body.drillType,
-            time: req.body.time,
-            reactTime: req.body.reactTime,
-            date: req.body.date,
-            splits: req.body.splits
-        });
-        shotTime = shotTime.toJSON();
-        res.json({shotTime: shotTime });
+            let shotTime = await ShotTime.create({
+                userId: userId,
+                drillType: req.body.drillType,
+                time: req.body.time,
+                reactTime: req.body.reactTime,
+                date: req.body.date,
+                splits: req.body.splits
+            });
+            shotTime = shotTime.toJSON();
+            res.json({shotTime: shotTime });
+        } catch (error) {
+            // Handle token verification errors
+            console.error('Token verification failed:', error.message);
+            res.status(401).json({ error: 'Token verification failed' });
+        }
     }
  };
 
