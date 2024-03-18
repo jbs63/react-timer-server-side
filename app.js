@@ -19,12 +19,6 @@ const login = require('./controllers/login.js');
 const middleware = require("./lib/middleware.js");
 const credentials = require('./models/credentials.js');
 
-// set up handlebars view engine
-let handlebars = require('express-handlebars')
-	.create({ defaultLayout:'main' });
-app.engine('handlebars', handlebars.engine);
-app.set('view engine', 'handlebars');
-
 app.set('port', process.env.PORT || 80);
 
 // Set up sessions
@@ -57,13 +51,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Main routes
 // Profile page
 app.get('/', middleware.loginRequired, main.root);
-// app.post('/', main.addTime);
-
 app.get('/times', main.getShotTimes);
 app.post('/times', main.addTime);
 
 // Login and register pages
-//app.get('/login', login.login);
 app.post('/login', passport.authenticate('local', { failureMessage: true}), login.processLogin);
 app.get('/register', login.register);
 app.post('/register', login.processRegister);
@@ -78,14 +69,12 @@ app.get('/auth/google/callback', login.processGoogleCallback);
 // 404 catch-all handler (middleware)
 app.use(function(req, res, next){
 	res.status(404);
-	res.render('404');
 });
 
 // 500 error handler (middleware)
 app.use(function(err, req, res, next){
 	console.error(err.stack);
 	res.status(500);
-	res.render('500');
 });
 
 app.listen(app.get('port'), function(){
