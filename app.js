@@ -4,6 +4,7 @@ const express = require('express');
 const passport = require('passport');
 const session = require("express-session");
 const configureSecurity = require('./controllers/security.js');
+const verifyFirebaseToken = require('./controllers/firebaseAuth.js');
 
 const app = express();
 let bodyParser = require('body-parser')

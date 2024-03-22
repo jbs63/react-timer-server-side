@@ -20,6 +20,4 @@ async function verifyFirebaseToken(req, res, next) {
     }
 }
 
-module.exports = {
-    verifyFirebaseToken
-};
+module.exports = verifyFirebaseToken;
