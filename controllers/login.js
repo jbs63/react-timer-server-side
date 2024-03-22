@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const passport = require('passport');
 const Account = mongoose.model("Account");
 
 let login = {
@@ -46,16 +45,6 @@ let login = {
             res.redirect("/register");
         }
     },
-
-    // New function for Google authentication
-    processGoogleLogin: passport.authenticate('google', {
-        scope: ['profile', 'email']
-    }),
-
-    // Callback function for Google authentication
-    processGoogleCallback: passport.authenticate('google', {
-        failureRedirect: '/login' // Redirect to login page on failure
-    }),
 
     // Logout function
     logout: (req, res) => {

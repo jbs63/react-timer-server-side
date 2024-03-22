@@ -4,7 +4,6 @@ const express = require('express');
 const passport = require('passport');
 const session = require("express-session");
 const configureSecurity = require('./controllers/security.js');
-const configureOAuth2 = require('./models/oauth2.js');
 
 const app = express();
 let bodyParser = require('body-parser')
@@ -30,9 +29,6 @@ app.use(passport.session());
 
 // Configure security settings using custom middleware
 configureSecurity(app);
-
-// Configure Google OAuth2 strategy
-configureOAuth2();
 
 // Configure passport-local to use account model for authentication
 const Account = require('./models/account');
@@ -61,10 +57,6 @@ app.post('/register', login.processRegister);
 
 // Logout route
 app.post('/logout', login.logout);
-
-// Google OAuth2 routes
-app.get('/auth/google', login.processGoogleLogin);
-app.get('/auth/google/callback', login.processGoogleCallback);
 
 // 404 catch-all handler (middleware)
 app.use(function(req, res, next){
