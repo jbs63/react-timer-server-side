@@ -5,9 +5,7 @@ const ShotTime = mongoose.model("ShotTime");
 let main = {
     // Base profile page
     root: async (req, res) => {
-        // To send username, profile pic, etc
-        const account = await Account.findOne({ username: req.body.username }).lean();
-        res.json({account: account});
+        res.status(200).json({message: "Server started successfully!!"});
     },
 
     // get shot times

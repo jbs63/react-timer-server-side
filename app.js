@@ -46,6 +46,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Main routes
 // Profile page
+app.get('/', main.root);
 app.get('/times', main.getShotTimes);
 app.post('/times', main.addTime);
 
