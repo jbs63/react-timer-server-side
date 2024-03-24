@@ -18,7 +18,7 @@ const main = require ('./controllers/main.js')
 const login = require('./controllers/login.js');
 const credentials = require('./models/credentials.js');
 
-app.set('port', process.env.PORT || 80);
+app.set('port', process.env.PORT || 3000);
 
 // Set up sessions
 app.use(session({ resave: false, saveUninitialized: false, secret: credentials.cookieSecret}));
