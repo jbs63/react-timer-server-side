@@ -16,7 +16,6 @@ require('./models/db.js');
 // User defined middleware and controllers (route implementations)
 const main = require ('./controllers/main.js')
 const login = require('./controllers/login.js');
-const middleware = require("./lib/middleware.js");
 const credentials = require('./models/credentials.js');
 
 app.set('port', process.env.PORT || 80);
@@ -47,13 +46,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Main routes
 // Profile page
-app.get('/', middleware.loginRequired, main.root);
 app.get('/times', main.getShotTimes);
 app.post('/times', main.addTime);
 
 // Login and register pages
 app.post('/login', passport.authenticate('local', { failureMessage: true}), login.processLogin);
-app.get('/register', login.register);
 app.post('/register', login.processRegister);
 
 // Logout route

@@ -2,11 +2,9 @@ module.exports = {
   cookieSecret: 'your_cookie_secret',
   mongo: {
       development: {
-        //connectionString: 'mongodb://127.0.0.1:27017/capstone?retryWrites=true&w=majority' // Uses localhost
         connectionString: 'mongodb+srv://jeffb246:S5aUb4XdLM8GFdwv@cluster0.ks6oqs0.mongodb.net/reacttimer?retryWrites=true&w=majority'
       },
       production: {
-        //connectionString: 'mongodb://127.0.0.1:27017/capstone?retryWrites=true&w=majority'
         connectionString: 'mongodb+srv://jeffb246:S5aUb4XdLM8GFdwv@cluster0.ks6oqs0.mongodb.net/?retryWrites=true&w=majority'
       },
   },
