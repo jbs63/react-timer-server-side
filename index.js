@@ -1,11 +1,12 @@
 const dotenv = require("dotenv");
 dotenv.config();
 
-const Fastify = require("fastify");
+const fastify = require("fastify")({ logger: true });
 const { createClerkClient, clerkPlugin, getAuth } = require("@clerk/fastify");
+const configureSecurity = require('./controllers/fastify-security.js');
+
 const loadKeys = require("./envKeys.js");
 
-const fastify = Fastify({ logger: true });
 const clerkOptions = {
     publishableKey: loadKeys.publishableKey,
     secretKey: loadKeys.secretKey,
@@ -48,6 +49,9 @@ const publicRoutes = (instance, opts, done) => {
  */
 fastify.register(protectedRoutes);
 fastify.register(publicRoutes);
+
+// Configure security settings using custom middleware
+configureSecurity(fastify);
 
 const start = async () => {
   try {
