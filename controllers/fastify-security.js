@@ -14,13 +14,13 @@ function configureSecurity(fastify) {
         connectSrc: ["'self'", 'https://accounts.google.com/gsi/']
       },
     },
-    referrerPolicy: 'same-origin', // or 'strict-origin'
+    referrerPolicy: 'strict-origin', // or 'same-origin'
     crossOriginEmbedderPolicy: true,
     crossOriginOpenerPolicy: true,
     frameguard: { action: 'deny' }, // or 'sameorigin'
     hsts: { maxAge: 31536000, includeSubDomains: true },
     dnsPrefetchControl: false,
-    hidePoweredBy: true, // or true to remove completely
+    hidePoweredBy: true,
     noSniff: true,
     xssFilter: true,
     featurePolicy: {
