@@ -5,9 +5,8 @@ let mongoose = require('mongoose'),
 const Account = new Schema({
   username: String,
   email: String,
-  googleId: String,
   avatarUrl: String,
-  fastertRT: Number,
+  fastestRT: Number,
   fastestDrills: { type: [String], default: [] },
   // Add other fields as needed for various authentication strategies
 });

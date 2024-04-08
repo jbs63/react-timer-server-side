@@ -1,12 +1,8 @@
-// app.js
-
 const express = require('express');
 const passport = require('passport');
 const session = require("express-session");
 const configureSecurity = require('./controllers/security.js');
-
 const app = express();
-let bodyParser = require('body-parser')
 
 // Mongoose and db setup
 require('./models/db.js');
@@ -37,10 +33,6 @@ passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 
 app.use(express.static(__dirname + '/public'));
-
-// Configure body parser
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
 
 // Main routes
 // Profile page
