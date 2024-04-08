@@ -2,11 +2,9 @@ const express = require('express');
 const passport = require('passport');
 const session = require("express-session");
 const configureSecurity = require('./controllers/security.js');
-const configureOAuth2 = require('./models/oauth2.js');
 
 const app = express();
 let bodyParser = require('body-parser')
-
 
 // Mongoose and db setup
 require('./models/db.js');
@@ -14,10 +12,9 @@ require('./models/db.js');
 // User defined middleware and controllers (route implementations)
 const main = require ('./controllers/main.js')
 const login = require('./controllers/login.js');
-const middleware = require("./lib/middleware.js");
 const credentials = require('./models/credentials.js');
 
-app.set('port', process.env.PORT || 80);
+app.set('port', process.env.PORT || 3000);
 
 // Set up sessions
 app.use(session({ resave: false, saveUninitialized: false, secret: credentials.cookieSecret}));
@@ -28,9 +25,6 @@ app.use(passport.session());
 
 // Configure security settings using custom middleware
 configureSecurity(app);
-
-// Configure Google OAuth2 strategy
-configureOAuth2();
 
 // Configure passport-local to use account model for authentication
 const Account = require('./models/account');
@@ -49,21 +43,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Main routes
 
 // Profile page
-app.get('/', middleware.loginRequired, main.root);
+app.get('/', main.root);
 app.get('/times', main.getShotTimes);
 app.post('/times', main.addTime);
 
 // Login and register pages
 app.post('/login', passport.authenticate('local', { failureMessage: true}), login.processLogin);
-//app.get('/register', login.register);
 app.post('/register', login.processRegister);
 
 // Logout route
 app.post('/logout', login.logout);
-
-// Google OAuth2 routes
-app.get('/auth/google', login.processGoogleLogin);
-app.get('/auth/google/callback', login.processGoogleCallback);
 
 app.listen(app.get('port'), function(){
   console.log( 'Express started on http://localhost:' +
