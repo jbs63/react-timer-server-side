@@ -15,7 +15,7 @@ const privateRoutes = (instance, opts, done) => {
         }
 
         const user = await lookupOrCreateUser(userId);
-        return { user };
+        reply.status(200).json(user);
     });
 
     // get shot times
