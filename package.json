@@ -2,20 +2,15 @@
   "name": "react-timer-server-side",
   "version": "1.0.0",
   "description": "shot-timer-server-side",
-  "main": "app.js",
+  "main": "index.js",
   "directories": {
     "lib": "lib"
   },
   "dependencies": {
     "@clerk/fastify": "^0.6.39",
     "@fastify/helmet": "^11.1.1",
-    "express": "^4.19.2",
-    "express-session": "^1.18.0",
-    "helmet": "^7.1.0",
-    "mongoose": "^8.3.1",
-    "passport": "^0.7.0",
-    "passport-local": "^1.0.0",
-    "passport-local-mongoose": "^8.0.0"
+    "fastify": "^4.26.2",
+    "mongoose": "^8.3.1"
   },
   "scripts": {
     "test": "jest",

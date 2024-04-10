@@ -1,9 +1,10 @@
 const { clerkPlugin, getAuth } = require("@clerk/fastify");
 const { clerkOptions, clerkClient } = require("../models/clerkConfig.js");
 
-const mongoose = require("mongoose");
-//const Account = require("../models/account.js");
-//const ShotTime = mongoose.model("ShotTime");
+// Create database connection and import account & shot time schemas
+require("../models/db.js");
+const Account = require("../models/account.js");
+const ShotTime = require("../models/shotTime.js");
 
 const privateRoutes = (instance, opts, done) => {
     instance.register(clerkPlugin, clerkOptions);
@@ -13,7 +14,7 @@ const privateRoutes = (instance, opts, done) => {
             return reply.code(403).send();
         }
 
-        const user = userId ? await clerkClient.users.getUser(userId) : null;
+        const user = await lookupOrCreateUser(userId);
         return { user };
     });
 
@@ -61,18 +62,25 @@ const privateRoutes = (instance, opts, done) => {
     done();
 };
 
-/*
-const userLookupDB = (instance, opts, done, userEmail) => {
-    const findUser = Account.findOne({username: username}).lean();
-    console.log(findUser);
-    if(findUser) {
+const lookupOrCreateUser = async (userId) => {
+    try {
+        let user = await Account.findOne({ clerkUserId: userId }).lean();
         
-    } else {
-        // Otherwise, log error message
-        console.log("Incorrect login credentials");
-    }
+        if (!user) {
+            const clerkUser = await clerkClient.users.getUser(userId);
+            
+            // Create a new user in the database using Clerk user information
+            user = await Account.create({
+                clerkUserId: userId,
+                username: clerkUser.fullName,
 
-    done();
-};*/ 
+            });
+        }
+        return user;
+    } catch (error) {
+        console.error("Error looking up or creating user:", error);
+        throw new Error("Internal server error");
+    }
+};
 
 module.exports = privateRoutes;
