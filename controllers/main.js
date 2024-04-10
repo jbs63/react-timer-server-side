@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const Account = mongoose.model("Account");
 const ShotTime = mongoose.model("ShotTime");
 
 let main = {
