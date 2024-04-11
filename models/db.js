@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
-var credentials = require('./credentials.js');
 
 // Choose which URL to use for this connection
-let dbURI = credentials.mongo.development.connectionString;
+let dbURI = 'mongodb+srv://jeffb246:S5aUb4XdLM8GFdwv@cluster0.ks6oqs0.mongodb.net/reacttimer?retryWrites=true&w=majority';
 if (process.env.NODE_ENV === 'production') {
-  dbURI = credentials.mongo.production.connectionString;
+  dbURI = 'mongodb+srv://jeffb246:S5aUb4XdLM8GFdwv@cluster0.ks6oqs0.mongodb.net/?retryWrites=true&w=majority';
 }
 
 mongoose.connect(dbURI);
@@ -47,5 +46,5 @@ const gracefulShutdown = async (msg, callback) => {
   });
   
   // Require the specific schemas
-  require('./account');
-  require('./shotTime')
+  require('./account.js');
+  require('./shotTime.js')
