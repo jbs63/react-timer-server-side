@@ -1,0 +1,27 @@
+{{#if user}}
+<h1>{{user.username}}</h1>
+{{#if user.avatar}}
+{{user.avatar}}
+{{else}}
+<p>No avatar</p>
+{{/if}}
+
+{{#if user.fastestRT}}
+<h2>Fastest reaction time: {{user.fastestRT}}</h2>
+{{/if}}
+
+{{#if user.fastestDrills}}
+<h2>Drill times:</h2>
+<ul>
+    {{#each user.fastestDrills}}
+    <li>{{this}}</li>
+    {{/each}}
+</ul>
+{{else}}
+<h2>No drills</h2>
+{{/if}}
+
+{{else}}
+<h1>No such user exists</h1>
+{{/if}}
+<a href="/">Back to home page</a>
