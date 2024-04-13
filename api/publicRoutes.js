@@ -13,17 +13,8 @@ const publicRoutes = (instance, opts, done) => {
         return reply.view("./views/home", {});
     });
 
-    instance.post("/profile", async (request, reply) => {
-        let user = await Account.findOne({ username: request.body.username }).lean();
-        if(user) {
-            user = {
-                username: user.username,
-                avatar: user.avatarUrl,
-                fastestRT: user.fastestRT,
-                fastestDrills: user.fastestDrills
-            };
-        }
-        return reply.view("./views/profile", {user: user});
+    instance.post("/", async (request, reply) => {
+        return reply.redirect("/" + request.body.username);
     });
 
     instance.get("/:username", async (request, reply) => {
