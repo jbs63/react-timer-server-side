@@ -15,7 +15,7 @@ const privateRoutes = (instance, opts, done) => {
         }
 
         const user = await lookupOrCreateUser(userId);
-        reply.status(200).json(user);
+        return reply.status(200).send({user});
     });
 
     // get shot times
@@ -26,13 +26,12 @@ const privateRoutes = (instance, opts, done) => {
         }
         
         try {
-            const userId = request.body.userId;
             const shotTimes = await ShotTime.find({ userId: userId }).lean();
             console.log(shotTimes);
-            reply.status(200).json({ shotTimes: shotTimes });
+            return reply.status(200).send({shotTimes: shotTimes });
         } catch (error) {
             console.error("Error fetching shot times:", error);
-            reply.status(500).json({ error: "Internal server error" });
+            return reply.status(500).send({ error: "Internal server error: from fetching shot times." });
         }
     });
     
@@ -52,10 +51,10 @@ const privateRoutes = (instance, opts, done) => {
                 date: request.body.date,
                 splits: request.body.splits
             });
-            reply.status(201).json(shotTime);
+            return reply.status(201).send(shotTime);
         } catch (error) {
             console.error("Error adding shot time:", error);
-            reply.status(500).json({ error: "Internal server error" });
+            return reply.status(500).send({ error: "Internal server error: from adding shot time" });
         }
     });
 
