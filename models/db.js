@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 // Choose which URL to use for this connection
 let dbURI = 'mongodb+srv://jeffb246:S5aUb4XdLM8GFdwv@cluster0.ks6oqs0.mongodb.net/reacttimer?retryWrites=true&w=majority';
 if (process.env.NODE_ENV === 'production') {
-  dbURI = 'mongodb+srv://jeffb246:S5aUb4XdLM8GFdwv@cluster0.ks6oqs0.mongodb.net/?retryWrites=true&w=majority';
+  dbURI = 'mongodb+srv://jeffb246:S5aUb4XdLM8GFdwv@cluster0.ks6oqs0.mongodb.net/reacttimer?retryWrites=true&w=majority';
 }
 
 mongoose.connect(dbURI);

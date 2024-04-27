@@ -5,10 +5,6 @@ const Account = require("../models/account.js");
 const publicRoutes = (instance, opts, done) => {
 
     instance.get("/", async (request, reply) => {
-        /*return {
-            message:
-                "This is a public endpoint. Request /protected to test the Clerk auth middleware",
-        };*/
         return reply.view("./views/home", {});
     });
 
@@ -20,14 +16,16 @@ const publicRoutes = (instance, opts, done) => {
         const { username } = request.params;
         let user = await Account.findOne({ username: username }).lean();
         if(user) {
+            let shotTimes = await ShotTime.find({ userId: user._id }).lean();
             user = {
                 username: user.username,
                 avatar: user.avatarUrl,
                 fastestRT: user.fastestRT,
                 fastestDrills: user.fastestDrills
             };
+            return reply.view("./views/profile", {user: user, shotTimes: shotTimes});
         }
-        return reply.view("./views/profile", {user: user});
+        return reply.view("./views/profile");
     });
 
     done();
