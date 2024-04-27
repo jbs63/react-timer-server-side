@@ -2,19 +2,20 @@ const { clerkPlugin, getAuth } = require("@clerk/fastify");
 const { clerkOptions, clerkClient } = require("../models/clerkConfig.js");
 
 // Create database connection and import account & shot time schemas
-require("../models/db.js");
+const db = require("../models/db.js");
 const Account = require("../models/account.js");
 const ShotTime = require("../models/shotTime.js");
 
 const privateRoutes = (instance, opts, done) => {
     instance.register(clerkPlugin, clerkOptions);
-    instance.get("/protected", async (request, reply) => {
+    instance.get("/login", async (request, reply) => {
         const { userId } = getAuth(request);
         if (!userId) {
             return reply.code(403).send();
         }
 
         const user = await lookupOrCreateUser(userId);
+        console.log("Login Route:", user);
         return reply.status(200).send({user});
     });
 
@@ -41,16 +42,28 @@ const privateRoutes = (instance, opts, done) => {
         if (!userId) {
             return reply.code(403).send();
         }
+        console.log("add-shot-time route:", request.body);
+        const user = await lookupOrCreateUser(userId);
+
+        if(request.body.reactTime < user.fastestRT) {
+            user.fastestRT = request.body.reactTime;
+            if(request.body.drillType) {
+                user.fastestDrills.push(request.body.drillType);
+            }
+            await user.save();
+            console.log("mongo user save:", user);
+        }
         
         try {
             const shotTime = await ShotTime.create({
-                userId: request.body.userId,
-                drillType: request.body.drillType,
-                time: request.body.time,
-                reactTime: request.body.reactTime,
+                userId: user.clerkUserId,
                 date: request.body.date,
+                time: request.body.time,
+                drillType: request.body.drillType,
+                reactTime: request.body.reactTime,
                 splits: request.body.splits
             });
+
             return reply.status(201).send(shotTime);
         } catch (error) {
             console.error("Error adding shot time:", error);
@@ -58,22 +71,41 @@ const privateRoutes = (instance, opts, done) => {
         }
     });
 
+    // delete shot time
+    instance.delete("/delete-shot-time", async (request, reply) => {
+        const { userId } = getAuth(request);
+        if (!userId) {
+            return reply.code(403).send();
+        }
+        console.log("delete-shot-time route:", request.body);
+
+        if(request.body.shotId) {
+            const shotTime = await ShotTime.findByIdAndDelete(request.body.shotId);
+            return reply.status(201).send(shotTime);
+        }
+
+        return reply.status(400).send({ error: "Internal server error: from deleting shot time" });
+    });
+
     done();
 };
 
 const lookupOrCreateUser = async (userId) => {
     try {
-        let user = await Account.findOne({ clerkUserId: userId }).lean();
-        
+        let user = await Account.findOne({ clerkUserId: userId });
+        console.log("lookup current user status:", user);
+
         if (!user) {
             const clerkUser = await clerkClient.users.getUser(userId);
+            console.log(userId, clerkUser.fullName);
             
             // Create a new user in the database using Clerk user information
             user = await Account.create({
                 clerkUserId: userId,
                 username: clerkUser.fullName,
-
             });
+
+            console.log("User created in lookup function:", user);
         }
         return user;
     } catch (error) {

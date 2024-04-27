@@ -3,10 +3,10 @@ let mongoose = require('mongoose'),
 
 const ShotTime = new Schema({
   userId: String, // _id from Account
-  drillType: String,
-  time: Number,
-  reactTime: Number,
   date: String,
+  time: Number,
+  drillType: String,
+  reactTime: Number,
   splits: { type: [Number], default: [] },
 });
 

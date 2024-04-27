@@ -1,7 +1,6 @@
-// Create database connection and import account & shot time schemas
+// Create database connection and import account schemas
 require("../models/db.js");
 const Account = require("../models/account.js");
-const ShotTime = require("../models/shotTime.js");
 
 const publicRoutes = (instance, opts, done) => {
 
