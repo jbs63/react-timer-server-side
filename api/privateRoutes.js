@@ -2,7 +2,7 @@ const { clerkPlugin, getAuth } = require("@clerk/fastify");
 const { clerkOptions, clerkClient } = require("../models/clerkConfig.js");
 
 // Create database connection and import account & shot time schemas
-const db = require("../models/db.js");
+require("../models/db.js");
 const Account = require("../models/account.js");
 const ShotTime = require("../models/shotTime.js");
 
@@ -95,17 +95,30 @@ const lookupOrCreateUser = async (userId) => {
         let user = await Account.findOne({ clerkUserId: userId });
         console.log("lookup current user status:", user);
 
+        const clerkUser = await clerkClient.users.getUser(userId);
+
+        // Extract the username from the email address (up to the '@' sign)
+        const email = clerkUser.emailAddresses[0].emailAddress;
+        const atIndex = email.indexOf('@');
+        const username = atIndex !== -1 ? email.substring(0, atIndex) : email;
+
         if (!user) {
-            const clerkUser = await clerkClient.users.getUser(userId);
-            console.log(userId, clerkUser.fullName);
+            console.log(userId, username);
             
             // Create a new user in the database using Clerk user information
             user = await Account.create({
                 clerkUserId: userId,
-                username: clerkUser.fullName,
+                username: username
             });
 
+            console.log("Username:", username);
             console.log("User created in lookup function:", user);
+        }
+        
+        if(user.username ===undefined || user.username ===null) {
+            user.username = username;
+            // Only legacy users will enter here
+            await user.save();
         }
         return user;
     } catch (error) {
