@@ -10,6 +10,7 @@
     "@clerk/fastify": "^0.6.39",
     "@fastify/formbody": "^7.4.0",
     "@fastify/helmet": "^11.1.1",
+    "@fastify/static": "^7.0.3",
     "@fastify/view": "^9.0.0",
     "fastify": "^4.26.2",
     "handlebars": "^4.7.8",

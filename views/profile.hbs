@@ -1,9 +1,9 @@
 {{#if user}}
 <h1>{{user.username}}</h1>
 {{#if user.avatar}}
-{{user.avatar}}
+<img src="{{user.avatar}}">
 {{else}}
-<p>No avatar</p>
+<img src="/public/noavatar.jpg" width="100" height="100">
 {{/if}}
 
 {{#if user.fastestRT}}
@@ -11,14 +11,35 @@
 {{/if}}
 
 {{#if user.fastestDrills}}
-<h2>Drill times:</h2>
-<ul>
+<h2>Fastest drills:
+    <ul>
     {{#each user.fastestDrills}}
     <li>{{this}}</li>
     {{/each}}
-</ul>
+    </ul>
+</h2>
+
 {{else}}
 <h2>No drills</h2>
+{{/if}}
+
+<h2>Shot times</h2>
+{{#if shotTimes}}
+{{#each shotTimes}}
+<ul>
+    <li>Drill type: {{this.drillType}}
+    <ul>
+        <li>Time: {{this.time}} s</li>
+        <li>React time: {{this.reactTime}} s</li>
+        <li>Date: {{this.date}}</li>
+        <li>Splits: <ul>
+            {{#each this.splits}}
+            <li>{{this}} s</li>
+            {{/each}}
+        </ul></li>
+    </ul></li>
+</ul>
+{{/each}}
 {{/if}}
 
 {{else}}

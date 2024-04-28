@@ -2,6 +2,7 @@ const fastify = require("fastify")({ logger: true });
 const configureSecurity = require('./controllers/fastify-security.js');
 const privateRoutes = require('./api/privateRoutes.js');
 const publicRoutes = require('./api/publicRoutes.js');
+const path = require('node:path');
 
 // Configure handlebars rendering engine
 fastify.register(require("@fastify/view"), {
@@ -12,6 +13,9 @@ fastify.register(require("@fastify/view"), {
   includeViewExtension: true
 });
 fastify.register(require('@fastify/formbody'));
+fastify.register(require('@fastify/static'), {
+  root: path.join(__dirname, 'public'),
+  prefix: '/public/'});
 
 // Register the created routes
 fastify.register(privateRoutes);

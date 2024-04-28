@@ -17,7 +17,7 @@ const publicRoutes = (instance, opts, done) => {
         const { username } = request.params;
         let user = await Account.findOne({ username: username }).lean();
         if(user) {
-            let shotTimes = await ShotTime.find({ userId: user._id }).lean();
+            let shotTimes = await ShotTime.find({ userId: user.clerkUserId }).lean();
             user = {
                 username: user.username,
                 avatar: user.avatarUrl,
