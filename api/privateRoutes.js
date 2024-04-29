@@ -108,15 +108,18 @@ const lookupOrCreateUser = async (userId) => {
             // Create a new user in the database using Clerk user information
             user = await Account.create({
                 clerkUserId: userId,
-                username: username
+                username: username,
+                email: email
             });
 
             console.log("Username:", username);
+            console.log("Email:", email);
             console.log("User created in lookup function:", user);
         }
         
         if(user.username ===undefined || user.username ===null) {
             user.username = username;
+            user.email = email;
             // Only legacy users will enter here
             await user.save();
         }
